@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<!-- Test to populate the list of players -->
+<html>
+<body>
+
+<H3>Table Refresh test</H3>
+<p id = "pressNum">nothing</p>
+<p onclick="playerUpdate()">Update list</p>
+<br>
+<table id="playerlist">
+<thead>
+<tr><th>select</th><th>Name</th><th>Score</th>
+</tr>
+</thead>
+<tbody>
+<tr><td><input type="radio" name="playerGroup" onclick="playerSelected(0)"></input>
+</td><td>Fred</td><td>100</td></tr>
+</tbody>
+</table>
+
+
+
+<script>
+function playerSelected(who) {
+    document.getElementById("pressNum").innerHTML = "button "+who+" was pressed for " +
+			playArray.players[who].name;
+}
+
+var listString = '{"players": [' +
+			'{ "name":"David", "score":"100" },' +
+			'{ "name":"Mary", "score":"105" },' +
+			'{ "name":"George", "score":"91" },' +
+			'{ "name":"Cindy", "score":"114" } ]}' ;
+
+var playArray = JSON.parse( listString);
+
+function playerUpdate() {
+	var tbl = "<thead><tr><th>Select</th><th>Name</th><th>Score</th></tr></thead><tbody>";
+	var i;
+	for (i = 0; i < playArray.players.length; i++) {
+		tbl += '<tr><td><input type="radio" name="playerGroup" onclick="playerSelected('+ i +')"></input></td>';
+		tbl += '<td>' + playArray.players[i].name + '</td><td>'  +
+			playArray.players[i].score + '</td></tr>';
+	}
+	tbl += '</tbody></table>';
+	document.getElementById("playerlist").innerHTML = tbl;
+	document.getElementById("pressNum").innerHTML = "clicked";
+}
+</script>
+
+</body>
+</html>

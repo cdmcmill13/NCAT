@@ -1,0 +1,531 @@
+<!-- Microsim COMP375 Microcode simulation
+
+Copyright (c) 2004, 2010, 2016
+
+Author Ken Williams at North Carolina A&T State University
+
+version 1.4
+1.1 - Add example feature
+1.2 - Replace CPU to result reg switch with bus to CPU switch
+1.3 - Add color to better define the rows.  Add tooltips to table headers
+1.4 - Updated java applet to javascript. -->
+
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8"/>
+
+    <title>COMP375 Microcode Simulation</title>
+
+    <!-- CSS stylesheet -->
+    <link rel = "stylesheet" type = "text/css" href = "microcodecss.css">
+
+    <link rel="icon" href="favicon.ico" type="image/x-icon" />
+
+</head>
+
+<body>
+
+<h1>CPU Microcode Animation</h1>
+
+<p>This microcode animator demonstrates how the microcode can direct the CPU functions. By setting switches to
+    connect registers to the internal CPU bus, the processor can execute instructions. </p>
+
+<p>The table of check boxes below represents the microcode store or the read-only microcode memory inside the
+    processor.  Each box controls one switch that can connect a register to the internal CPU bus.  When the check
+    box is selected or "true", the switch is closed and the value from the register is put on the bus or the value
+    on the bus is copied to the register.  When a check box is clear or "false", the switch is open and the register
+    and bus are disconnected.</p>
+
+<p>A closed switch is represented with <img src ="switchClosed.GIF">
+    and an open switch is represented with <img src="switchOpen.GIF">.</p>
+
+<p>The Arithmetic Logic Unit or ALU performs the math functions (such as add, subtract, increment, etc.) and
+    logical functions (such as AND, OR, etc.).  For single operand functions such as increment and decrement, the
+    ALU operates on the value on the internal bus.  For two operand functions such as add and subtract, one operand
+    comes from the bus and the other comes from the operand register.  A data value must be copied into the operand
+    register before executing a binary ALU operation.  The results of the ALU operation can be copied into the result
+    register if this switch is closed.</p>
+
+<p>The memory system can read or write to RAM.  Because the memory system usually is much slower than the CPU
+    microstep execution, it is necessary to wait for a memory read or write to complete.  After issuing a read or write,
+    the microcode must perform a memory wait to assure the memory system has had time to copy the requested data into the
+    Memory Data Register.  To read a value from memory, the address desired must be copied into the Memory Address Register.
+    The memory function is set to read.  In a following step the memory function must be set to wait.  After that the value
+    in the Memory Data Register can be copied to the bus and to its desired location.  To write a value to memory,
+    the address must be placed in the Memory Address Register and the data in the Memory Data Register before a write.</p>
+
+<p>Enter the microcode program into the table below or select an example and then press the
+    <span>Step Microcode</span> button to execute each line of the microcode.</p>
+
+<br>
+
+<div id = "animation">
+
+    <canvas id = "microCanvas" width = "1000" height = "400">Your Browser Does Not Support Canvas</canvas>
+
+</div>
+
+<br>
+
+<table id="microTable" align = "center" border = '1px'>
+
+    <!--  -->
+    <tr id="headerRow">
+        <th>bus&rarr;IR</th>
+        <th>IRadr&rarr;bus</th>
+        <th>result&rarr;bus</th>
+        <th>bus&rarr;ALU</th>
+        <th>bus&rarr;oprnd</th>
+        <th>bus &rarr; PC</th>
+        <th>PC&rarr;bus</th>
+        <th>bus&rarr;R1</th>
+        <th>R1&rarr;bus</th>
+        <th>bus&rarr;R2</th>
+        <th>R2&rarr;bus</th>
+        <th>bus&rarr;MAR</th>
+        <th>bus&rarr;MBR</th>
+        <th>MBR&rarr;bus</th>
+        <th>ALU func</th>
+        <th>Mem func</th>
+    </tr>
+
+    <!--  -->
+    <tr id="rowOne" name = "every" class = "every">
+        <td><input name = "busToIR" type = 'checkbox' id = "row1BusToIR"></td>
+        <td><input name = "IRToBus" class = "row1ToBus" type = 'checkbox' id = "row1IRtoBus"></td>
+        <td><input name = "resultToBus" class = "row1ToBus" type = 'checkbox' id = "row1ResultToBus"></td>
+        <td><input name = "busToALU" type = 'checkbox' id = "row1BustoALU"></td>
+        <td><input name = "busToOP" type = 'checkbox' id = "row1BustoOp"></td>
+        <td><input name = "busToPC" type = 'checkbox' id = "row1BustoPC"></td>
+        <td><input name = "PCToBus" class = "row1ToBus" type = 'checkbox' id = "row1PCtoBus"></td>
+        <td><input name = "busToR1" type = 'checkbox' id = "row1BustoR1"></td>
+        <td><input name = "R1ToBus" class = "row1ToBus" type = 'checkbox' id = "row1R1ToBus"></td>
+        <td><input name = "busToR2" type = 'checkbox' id = "row1BustoR2"></td>
+        <td><input name = "R2ToBus" class = "row1ToBus" type = 'checkbox' id = "row1R2ToBus"></td>
+        <td><input name = "busToMAR" type = 'checkbox' id = "row1BustoMAR"></td>
+        <td><input name = "busToMBR" type = 'checkbox' id = "row1BustoMBR"></td>
+        <td><input name = "MBRToBus" class = "row1ToBus" type = 'checkbox' id = "row1MBRtoBus"></td>
+        <td>
+            <select name = "ALUDropdown" id="row1ALUFunc">
+
+                <option value = "NULL"></option>
+                <option id = "row1Add" value = "ADD">ADD</option>
+                <option id = "row1Sub" value = "SUB">SUB</option>
+                <option id = "row1Inc" value = "INC">INC</option>
+                <option id = "row1And" value = "AND">AND</option>
+                <option id = "row1Or" value = "OR">OR</option>
+
+            </select>
+        </td>
+
+        <td>
+            <select name = "memDropdown" id="row1MemFunc">
+
+                <option value = "NULL"></option>
+                <option id = "row1Read" value = "READ">Read</option>
+                <option id = "row1Write" value = "WRITE">Write</option>
+                <option id = "row1Wait" value = "WAIT">Wait</option>
+
+            </select>
+        </td>
+    </tr>
+
+    <!--  -->
+    <tr id="rowTwo" name = "other" class = "other">
+        <td><input name = "busToIR" type = 'checkbox' id = "row2BusToIR"></td>
+        <td><input name = "IRToBus" class = "row2ToBus" type = 'checkbox' id = "row2IRtoBus"></td>
+        <td><input name = "resultToBus" class = "row2ToBus" type = 'checkbox' id = "row2ResultToBus"></td>
+        <td><input name = "busToALU" type = 'checkbox' id = "row2BustoALU"></td>
+        <td><input name = "busToOP" type = 'checkbox' id = "row2BustoOp"></td>
+        <td><input name = "busToPC" type = 'checkbox' id = "row2BustoPC"></td>
+        <td><input name = "PCToBus" class = "row2ToBus" type = 'checkbox' id = "row2PCtoBus"></td>
+        <td><input name = "busToR1" type = 'checkbox' id = "row2BustoR1"></td>
+        <td><input name = "R1ToBus" class = "row2ToBus" type = 'checkbox' id = "row2R1ToBus"></td>
+        <td><input name = "busToR2" type = 'checkbox' id = "row2BustoR2"></td>
+        <td><input name = "R2ToBus" class = "row2ToBus" type = 'checkbox' id = "row2R2ToBus"></td>
+        <td><input name = "busToMAR" type = 'checkbox' id = "row2BustoMAR"></td>
+        <td><input name = "busToMBR" type = 'checkbox' id = "row2BustoMBR"></td>
+        <td><input name = "MBRToBus" class = "row2ToBus" type = 'checkbox' id = "row21MBRtoBus"></td>
+        <td>
+            <select name = "ALUDropdown" id="row2ALUFunc">
+
+                <option value = "NULL"></option>
+                <option id = "row2Add" value = "ADD">ADD</option>
+                <option id = "row2Sub" value = "SUB">SUB</option>
+                <option id = "row2Inc" value = "INC">INC</option>
+                <option id = "row2And" value = "AND">AND</option>
+                <option id = "row2Or" value = "OR">OR</option>
+
+            </select>
+        </td>
+
+        <td>
+            <select name = "memDropdown" id="row2MemFunc">
+
+                <option value = "NULL"></option>
+                <option id = "row2Read" value = "READ">Read</option>
+                <option id = "row2Write" value = "WRITE">Write</option>
+                <option id = "row2Wait" value = "WAIT">Wait</option>
+
+            </select>
+        </td>
+    </tr>
+
+    <!--  -->
+    <tr id="rowThree" name = "every" class = "every">
+        <td><input name = "busToIR" type = 'checkbox' id = "row3BusToIR"></td>
+        <td><input name = "IRToBus" class = "row3ToBus" type = 'checkbox' id = "row3IRtoBus"></td>
+        <td><input name = "resultToBus" class = "row3ToBus" type = 'checkbox' id = "row3ResultToBus"></td>
+        <td><input name = "busToALU" type = 'checkbox' id = "row3BustoALU"></td>
+        <td><input name = "busToOP" type = 'checkbox' id = "row3BustoOp"></td>
+        <td><input name = "busToPC" type = 'checkbox' id = "row3BustoPC"></td>
+        <td><input name = "PCToBus" class = "row3ToBus" type = 'checkbox' id = "row3PCtoBus"></td>
+        <td><input name = "busToR1" type = 'checkbox' id = "row3BustoR1"></td>
+        <td><input name = "R1ToBus" class = "row3ToBus" type = 'checkbox' id = "row3R1ToBus"></td>
+        <td><input name = "busToR2" type = 'checkbox' id = "row3BustoR2"></td>
+        <td><input name = "R2ToBus" class = "row3ToBus" type = 'checkbox' id = "row3R2ToBus"></td>
+        <td><input name = "busToMAR" type = 'checkbox' id = "row3BustoMAR"></td>
+        <td><input name = "busToMBR" type = 'checkbox' id = "row3BustoMBR"></td>
+        <td><input name = "MBRToBus" class = "row3ToBus" type = 'checkbox' id = "row3MBRtoBus"></td>
+        <td>
+            <select name = "ALUDropdown" id="row3ALUFunc">
+
+                <option value = "NULL"></option>
+                <option id = "row3Add" value = "ADD">ADD</option>
+                <option id = "row3Sub" value = "SUB">SUB</option>
+                <option id = "row3Inc" value = "INC">INC</option>
+                <option id = "row3And" value = "AND">AND</option>
+                <option id = "row3Or" value = "OR">OR</option>
+
+            </select>
+        </td>
+
+        <td>
+            <select name = "memDropdown" id="row3MemFunc">
+
+                <option value = "NULL"></option>
+                <option id = "row3Read" value = "READ">Read</option>
+                <option id = "row3Write" value = "WRITE">Write</option>
+                <option id = "row3Wait" value = "WAIT">Wait</option>
+
+            </select>
+        </td>
+    </tr>
+
+    <!--  -->
+    <tr id="rowFour" name = "other" class = "other">
+        <td><input name = "busToIR" type = 'checkbox' id = "row4BusToIR"></td>
+        <td><input name = "IRToBus" class = "row4ToBus" type = 'checkbox' id = "row4IRtoBus"></td>
+        <td><input name = "resultToBus" class = "row4ToBus" type = 'checkbox' id = "row4ResultToBus"></td>
+        <td><input name = "busToALU" type = 'checkbox' id = "row4BustoALU"></td>
+        <td><input name = "busToOP" type = 'checkbox' id = "row4BustoOp"></td>
+        <td><input name = "busToPC" type = 'checkbox' id = "row4BustoPC"></td>
+        <td><input name = "PCToBus" class = "row4ToBus" type = 'checkbox' id = "row4PCtoBus"></td>
+        <td><input name = "busToR1" type = 'checkbox' id = "row4BustoR1"></td>
+        <td><input name = "R1ToBus" class = "row4ToBus" type = 'checkbox' id = "row4R1ToBus"></td>
+        <td><input name = "busToR2" type = 'checkbox' id = "row4BustoR2"></td>
+        <td><input name = "R2ToBus" class = "row4ToBus" type = 'checkbox' id = "row4R2ToBus"></td>
+        <td><input name = "busToMAR" type = 'checkbox' id = "row4BustoMAR"></td>
+        <td><input name = "busToMBR" type = 'checkbox' id = "row4BustoMBR"></td>
+        <td><input name = "MBRToBus" class = "row4ToBus" type = 'checkbox' id = "row4MBRtoBus"></td>
+        <td>
+            <select name = "ALUDropdown" id="row4ALUFunc">
+
+                <option value = "NULL"></option>
+                <option id = "row4Add" value = "ADD">ADD</option>
+                <option id = "row4Sub" value = "SUB">SUB</option>
+                <option id = "row4Inc" value = "INC">INC</option>
+                <option id = "row4And" value = "AND">AND</option>
+                <option id = "row4Or" value = "OR">OR</option>
+
+            </select>
+        </td>
+
+        <td>
+            <select name = "memDropdown" id="row4MemFunc">
+
+                <option value = "NULL"></option>
+                <option id = "row4Read" value = "READ">Read</option>
+                <option id = "row4Write" value = "WRITE">Write</option>
+                <option id = "row4Wait" value = "WAIT">Wait</option>
+
+            </select>
+        </td>
+    </tr>
+
+    <!--  -->
+    <tr id="rowFive" name = "every" class = "every">
+        <td><input name = "busToIR" type = 'checkbox' id = "row5BusToIR"></td>
+        <td><input name = "IRToBus" class = "row5ToBus" type = 'checkbox' id = "row5IRtoBus"></td>
+        <td><input name = "resultToBus" class = "row5ToBus" type = 'checkbox' id = "row5ResultToBus"></td>
+        <td><input name = "busToALU" type = 'checkbox' id = "row5BustoALU"></td>
+        <td><input name = "busToOP" type = 'checkbox' id = "row5BustoOp"></td>
+        <td><input name = "busToPC" type = 'checkbox' id = "row5BustoPC"></td>
+        <td><input name = "PCToBus" class = "row5ToBus" type = 'checkbox' id = "row5PCtoBus"></td>
+        <td><input name = "busToR1" type = 'checkbox' id = "row5BustoR1"></td>
+        <td><input name = "R1ToBus" class = "row5ToBus" type = 'checkbox' id = "row5R1ToBus"></td>
+        <td><input name = "busToR2" type = 'checkbox' id = "row5BustoR2"></td>
+        <td><input name = "R2ToBus" class = "row5ToBus" type = 'checkbox' id = "row5R2ToBus"></td>
+        <td><input name = "busToMAR" type = 'checkbox' id = "row5BustoMAR"></td>
+        <td><input name = "busToMBR" type = 'checkbox' id = "row5BustoMBR"></td>
+        <td><input name = "MBRToBus" class = "row5ToBus" type = 'checkbox' id = "row5MBRtoBus"></td>
+        <td>
+            <select name = "ALUDropdown" id="row5ALUFunc">
+
+                <option value = "NULL"></option>
+                <option id = "row5Add" value = "ADD">ADD</option>
+                <option id = "row5Sub" value = "SUB">SUB</option>
+                <option id = "row5Inc" value = "INC">INC</option>
+                <option id = "row5And" value = "AND">AND</option>
+                <option id = "row5Or" value = "OR">OR</option>
+
+            </select>
+        </td>
+
+        <td>
+            <select name = "memDropdown" id="row5MemFunc">
+
+                <option value = "NULL"></option>
+                <option id = "row5Read" value = "READ">Read</option>
+                <option id = "row5Write" value = "WRITE">Write</option>
+                <option id = "row5Wait" value = "WAIT">Wait</option>
+
+            </select>
+        </td>
+    </tr>
+
+    <!--  -->
+    <tr id="rowSix" name = "other" class = "other">
+        <td><input name = "busToIR" type = 'checkbox' id = "row6BusToIR"></td>
+        <td><input name = "IRToBus" class = "row6ToBus" type = 'checkbox' id = "row6IRtoBus"></td>
+        <td><input name = "resultToBus" class = "row6ToBus" type = 'checkbox' id = "row6ResultToBus"></td>
+        <td><input name = "busToALU" type = 'checkbox' id = "row6BustoALU"></td>
+        <td><input name = "busToOP" type = 'checkbox' id = "row6BustoOp"></td>
+        <td><input name = "busToPC" type = 'checkbox' id = "row6BustoPC"></td>
+        <td><input name = "PCToBus" class = "row6ToBus" type = 'checkbox' id = "row6PCtoBus"></td>
+        <td><input name = "busToR1" type = 'checkbox' id = "row6BustoR1"></td>
+        <td><input name = "R1ToBus" class = "row6ToBus" type = 'checkbox' id = "row6R1ToBus"></td>
+        <td><input name = "busToR2" type = 'checkbox' id = "row6BustoR2"></td>
+        <td><input name = "R2ToBus" class = "row6ToBus" type = 'checkbox' id = "row6R2ToBus"></td>
+        <td><input name = "busToMAR" type = 'checkbox' id = "row6BustoMAR"></td>
+        <td><input name = "busToMBR" type = 'checkbox' id = "row6BustoMBR"></td>
+        <td><input name = "MBRToBus" class = "row6ToBus" type = 'checkbox' id = "row6MBRtoBus"></td>
+        <td>
+            <select name = "ALUDropdown" id="row6ALUFunc">
+
+                <option value = "NULL"></option>
+                <option id = "row6Add" value = "ADD">ADD</option>
+                <option id = "row6Sub" value = "SUB">SUB</option>
+                <option id = "row6Inc" value = "INC">INC</option>
+                <option id = "row6And" value = "AND">AND</option>
+                <option id = "row6Or" value = "OR">OR</option>
+
+            </select>
+        </td>
+
+        <td>
+            <select name = "memDropdown" id="row6MemFunc">
+
+                <option value = "NULL"></option>
+                <option id = "row6Read" value = "READ">Read</option>
+                <option id = "row6Write" value = "WRITE">Write</option>
+                <option id = "row6Wait" value = "WAIT">Wait</option>
+
+            </select>
+        </td>
+    </tr>
+
+    <!--  -->
+    <tr id="rowSeven" name = "every" class = "every">
+        <td><input name = "busToIR" type = 'checkbox' id = "row7BusToIR"></td>
+        <td><input name = "IRToBus" class = "row7ToBus" type = 'checkbox' id = "row7IRtoBus"></td>
+        <td><input name = "resultToBus" class = "row7ToBus" type = 'checkbox' id = "row7ResultToBus"></td>
+        <td><input name = "busToALU" type = 'checkbox' id = "row7BustoALU"></td>
+        <td><input name = "busToOP" type = 'checkbox' id = "row7BustoOp"></td>
+        <td><input name = "busToPC" type = 'checkbox' id = "row7BustoPC"></td>
+        <td><input name = "PCToBus" class = "row7ToBus" type = 'checkbox' id = "row7PCtoBus"></td>
+        <td><input name = "busToR1" type = 'checkbox' id = "row7BustoR1"></td>
+        <td><input name = "R1ToBus" class = "row7ToBus" type = 'checkbox' id = "row7R1ToBus"></td>
+        <td><input name = "busToR2" type = 'checkbox' id = "row7BustoR2"></td>
+        <td><input name = "R2ToBus" class = "row7ToBus" type = 'checkbox' id = "row7R2ToBus"></td>
+        <td><input name = "busToMAR" type = 'checkbox' id = "row7BustoMAR"></td>
+        <td><input name = "busToMBR" type = 'checkbox' id = "row7BustoMBR"></td>
+        <td><input name = "MBRToBus" class = "row7ToBus" type = 'checkbox' id = "row7MBRtoBus"></td>
+        <td>
+            <select name = "ALUDropdown" id="row7ALUFunc">
+
+                <option value = "NULL"></option>
+                <option id = "row67Add" value = "ADD">ADD</option>
+                <option id = "row7Sub" value = "SUB">SUB</option>
+                <option id = "row7Inc" value = "INC">INC</option>
+                <option id = "row7And" value = "AND">AND</option>
+                <option id = "row7Or" value = "OR">OR</option>
+
+            </select>
+        </td>
+
+        <td>
+            <select name = "memDropdown" id="row7MemFunc">
+
+                <option value = "NULL"></option>
+                <option id = "row7Read" value = "READ">Read</option>
+                <option id = "row7Write" value = "WRITE">Write</option>
+                <option id = "row7Wait" value = "WAIT">Wait</option>
+
+            </select>
+        </td>
+    </tr>
+
+    <!--  -->
+    <tr id="rowEight" name = "other" class = "other">
+        <td><input name = "busToIR" type = 'checkbox' id = "row8BusToIR"></td>
+        <td><input name = "IRToBus" class = "row8ToBus" type = 'checkbox' id = "row8IRtoBus"></td>
+        <td><input name = "resultToBus" class = "row8ToBus" type = 'checkbox' id = "row8ResultToBus"></td>
+        <td><input name = "busToALU" type = 'checkbox' id = "row8BustoALU"></td>
+        <td><input name = "busToOP" type = 'checkbox' id = "row8BustoOp"></td>
+        <td><input name = "busToPC" type = 'checkbox' id = "row8BustoPC"></td>
+        <td><input name = "PCToBus" class = "row8ToBus" type = 'checkbox' id = "row8PCtoBus"></td>
+        <td><input name = "busToR1" type = 'checkbox' id = "row8BustoR1"></td>
+        <td><input name = "R1ToBus" class = "row8ToBus" type = 'checkbox' id = "row8R1ToBus"></td>
+        <td><input name = "busToR2" type = 'checkbox' id = "row8BustoR2"></td>
+        <td><input name = "R2ToBus" class = "row8ToBus" type = 'checkbox' id = "row8R2ToBus"></td>
+        <td><input name = "busToMAR" type = 'checkbox' id = "row8BustoMAR"></td>
+        <td><input name = "busToMBR" type = 'checkbox' id = "row8BustoMBR"></td>
+        <td><input name = "MBRToBus" class = "row8ToBus" type = 'checkbox' id = "row8MBRtoBus"></td>
+        <td>
+            <select name = "ALUDropdown" id="row8ALUFunc">
+
+                <option value = "NULL"></option>
+                <option id = "row8Add" value = "ADD">ADD</option>
+                <option id = "row8Sub" value = "SUB">SUB</option>
+                <option id = "row8Inc" value = "INC">INC</option>
+                <option id = "row8And" value = "AND">AND</option>
+                <option id = "row8Or" value = "OR">OR</option>
+
+            </select>
+        </td>
+
+        <td>
+            <select name = "memDropdown" id="row8MemFunc">
+
+                <option value = "NULL"></option>
+                <option id = "row8Read" value = "READ">Read</option>
+                <option id = "row8Write" value = "WRITE">Write</option>
+                <option id = "row8Wait" value = "WAIT">Wait</option>
+
+            </select>
+        </td>
+    </tr>
+
+    <!--  -->
+    <tr id="rowNine" name = "every" class = "every">
+        <td><input name = "busToIR" type = 'checkbox' id = "row9BusToIR"></td>
+        <td><input name = "IRToBus" class = "row9ToBus" type = 'checkbox' id = "row9IRtoBus"></td>
+        <td><input name = "resultToBus" class = "row9ToBus" type = 'checkbox' id = "row9ResultToBus"></td>
+        <td><input name = "busToALU" type = 'checkbox' id = "row9BustoALU"></td>
+        <td><input name = "busToOP" type = 'checkbox' id = "row9BustoOp"></td>
+        <td><input name = "busToPC" type = 'checkbox' id = "row9BustoPC"></td>
+        <td><input name = "PCToBus" class = "row9ToBus" type = 'checkbox' id = "row9PCtoBus"></td>
+        <td><input name = "busToR1" type = 'checkbox' id = "row9BustoR1"></td>
+        <td><input name = "R1ToBus" class = "row9ToBus" type = 'checkbox' id = "row9R1ToBus"></td>
+        <td><input name = "busToR2" type = 'checkbox' id = "row9BustoR2"></td>
+        <td><input name = "R2ToBus" class = "row9ToBus" type = 'checkbox' id = "row9R2ToBus"></td>
+        <td><input name = "busToMAR" type = 'checkbox' id = "row9BustoMAR"></td>
+        <td><input name = "busToMBR" type = 'checkbox' id = "row9BustoMBR"></td>
+        <td><input name = "MBRToBus" class = "row9ToBus" type = 'checkbox' id = "row9MBRtoBus"></td>
+        <td>
+            <select name = "ALUDropdown" id="row9ALUFunc">
+
+                <option value = "NULL"></option>
+                <option id = "row9Add" value = "ADD">ADD</option>
+                <option id = "row9Sub" value = "SUB">SUB</option>
+                <option id = "row9Inc" value = "INC">INC</option>
+                <option id = "row9And" value = "AND">AND</option>
+                <option id = "row9Or" value = "OR">OR</option>
+
+            </select>
+        </td>
+
+        <td>
+            <select name = "memDropdown" id="row9MemFunc">
+
+                <option value = "NULL"></option>
+                <option id = "row9Read" value = "READ">Read</option>
+                <option id = "row9Write" value = "WRITE">Write</option>
+                <option id = "row9Wait" value = "WAIT">Wait</option>
+
+            </select>
+        </td>
+    </tr>
+
+    <!--  -->
+    <tr id="rowTen" name = "other" class = "other">
+        <td><input name = "busToIR" type = 'checkbox' id = "row10BusToIR"></td>
+        <td><input name = "IRToBus" class = "row10ToBus" type = 'checkbox' id = "row10IRtoBus"></td>
+        <td><input name = "resultToBus" class = "row10ToBus" type = 'checkbox' id = "row10ResultToBus"></td>
+        <td><input name = "busToALU" type = 'checkbox' id = "row10BustoALU"></td>
+        <td><input name = "busToOP" type = 'checkbox' id = "row10BustoOp"></td>
+        <td><input name = "busToPC" type = 'checkbox' id = "row10BustoPC"></td>
+        <td><input name = "PCToBus" class = "row10ToBus" type = 'checkbox' id = "row10PCtoBus"></td>
+        <td><input name = "busToR1" type = 'checkbox' id = "row10BustoR1"></td>
+        <td><input name = "R1ToBus" class = "row10ToBus" type = 'checkbox' id = "row10R1ToBus"></td>
+        <td><input name = "busToR2" type = 'checkbox' id = "row10BustoR2"></td>
+        <td><input name = "R2ToBus" class = "row10ToBus" type = 'checkbox' id = "row10R2ToBus"></td>
+        <td><input name = "busToMAR" type = 'checkbox' id = "row10BustoMAR"></td>
+        <td><input name = "busToMBR" type = 'checkbox' id = "row10BustoMBR"></td>
+        <td><input name = "MBRToBus" class = "row10ToBus" type = 'checkbox' id = "row10MBRtoBus"></td>
+        <td>
+            <select name = "ALUDropdown" id="row10ALUFunc">
+
+                <option value = "NULL"></option>
+                <option id = "row10Add" value = "ADD">ADD</option>
+                <option id = "row10Sub" value = "SUB">SUB</option>
+                <option id = "row10Inc" value = "INC">INC</option>
+                <option id = "row10And" value = "AND">AND</option>
+                <option id = "row10Or" value = "OR">OR</option>
+
+            </select>
+        </td>
+
+        <td>
+            <select name = "memDropdown" id="row10MemFunc">
+
+                <option value = "NULL"></option>
+                <option id = "row10Read" value = "READ">Read</option>
+                <option id = "row10Write" value = "WRITE">Write</option>
+                <option id = "row10Wait" value = "WAIT">Wait</option>
+
+            </select>
+        </td>
+    </tr>
+
+</table>
+
+<div align = "center">
+
+    <button id = "resetButton">Reset</button>
+
+    <button id="stepButton">Step</button>
+
+    <button id="clearButton">Clear</button>
+
+    <!-- <input id="toggleFirstThree" class="allItsOwn" name="toggleFirstThree" type="checkbox">
+    <label for="toggleFirstThree">Include instruction fetch and program counter increment</label> -->
+
+    <br>
+
+    <button id="loadSimOne">Add R1, XYZ Immediate Addressing</button>
+
+    <button id="loadSimTwo">Add R1, XYZ Direct Addressing</button>
+
+    <button id="loadSimThree">Jump nextinst Direct Addressing</button>
+
+</div>
+
+<script type = "text/javascript" src = "microcodejs.js"></script>
+
+</body>
+
+</html>

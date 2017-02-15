@@ -1,0 +1,622 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=Generator content="Microsoft Word 15 (filtered)">
+<title>Firewall Simulation Instructions</title>
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:Batang;
+	panose-1:2 3 6 0 0 1 1 1 1 1;}
+@font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+@font-face
+	{font-family:"\@Batang";
+	panose-1:2 3 6 0 0 1 1 1 1 1;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0in;
+	margin-bottom:.0001pt;
+	text-align:justify;
+	font-size:12.0pt;
+	font-family:"Times New Roman",serif;}
+p.MsoHeader, li.MsoHeader, div.MsoHeader
+	{mso-style-link:"Header Char";
+	margin:0in;
+	margin-bottom:.0001pt;
+	text-align:justify;
+	font-size:12.0pt;
+	font-family:"Times New Roman",serif;}
+p.MsoFooter, li.MsoFooter, div.MsoFooter
+	{mso-style-link:"Footer Char";
+	margin:0in;
+	margin-bottom:.0001pt;
+	text-align:justify;
+	font-size:12.0pt;
+	font-family:"Times New Roman",serif;}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:blue;
+	text-decoration:underline;}
+p.msonormal0, li.msonormal0, div.msonormal0
+	{mso-style-name:msonormal;
+	margin-right:0in;
+	margin-left:0in;
+	font-size:12.0pt;
+	font-family:"Times New Roman",serif;}
+span.HeaderChar
+	{mso-style-name:"Header Char";
+	mso-style-link:Header;
+	font-family:Batang;}
+span.FooterChar
+	{mso-style-name:"Footer Char";
+	mso-style-link:Footer;
+	font-family:Batang;}
+span.charchar1
+	{mso-style-name:charchar1;
+	font-family:"Times New Roman",serif;}
+span.charchar
+	{mso-style-name:charchar;
+	font-family:"Times New Roman",serif;}
+.MsoChpDefault
+	{font-size:10.0pt;}
+@page WordSection1
+	{size:8.5in 11.0in;
+	margin:1.0in .75in 1.0in .75in;}
+div.WordSection1
+	{page:WordSection1;}
+ /* List Definitions */
+ ol
+	{margin-bottom:0in;}
+ul
+	{margin-bottom:0in;}
+-->
+</style>
+
+</head>
+
+<body lang=EN-US link=blue vlink=blue>
+
+<div class=WordSection1>
+
+<p class=MsoNormal align=center style='text-align:center'><span
+style='font-size:20.0pt;font-family:"Arial",sans-serif'>Firewall Simulation
+Instructions</span></p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal>The Firewall Simulator is a tool for students to learn how
+to configure a firewall using Cisco-like commands. The process for using the
+simulator is:</p>
+
+<ul style='margin-top:0in' type=disc>
+ <li class=MsoNormal style='margin-top:6.0pt'>Open the simulator web page. If
+     it asks you to trust the applet, responds positively.</li>
+ <li class=MsoNormal style='margin-top:6.0pt'>When you first start, you must
+     enter your name to identify yourself to other participants. Names must be
+     less than 17 characters in length.</li>
+ <li class=MsoNormal style='margin-top:6.0pt'>Configure your firewall to allow
+     needed services while preventing attacks. A separate frame holds the
+     firewall configuration commands. Type in the access-list commands and
+     press the large button at the top marked “Update Configuration”.</li>
+ <li class=MsoNormal style='margin-top:6.0pt'>Once the actions are enabled by
+     the administrator, you can take actions against other players.</li>
+ <li class=MsoNormal style='margin-top:6.0pt'>If you receive messages that
+     other players are successfully attacking your network, reconfigure your
+     firewall to correct problems.</li>
+ <li class=MsoNormal style='margin-top:6.0pt'>New tasks will appear that may
+     require you to reconfigure your firewall. Shortly after a new task
+     appears, you are vulnerable to related attacks by other players. You may
+     also attack other players.</li>
+</ul>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal>The general format for a Cisco-like firewall configuration
+command is:</p>
+
+<p class=MsoNormal style='margin-top:6.0pt;margin-right:0in;margin-bottom:12.0pt;
+margin-left:0in'><b>access-list</b> number {<b>permit</b> | <b>deny</b>}
+[protocol] {<b>any</b> | ipaddr mask | <b>host</b> ipaddr} {<b>any</b> | ipaddr
+mask | <b>host</b> ipaddr} [operator port | established] [<b>log</b>]</p>
+
+<ul style='margin-top:0in' type=disc>
+ <li class=MsoNormal style='margin-top:5.0pt;margin-bottom:5.0pt;text-align:
+     left;background:white'><b><span style='font-size:11.0pt;font-family:"Arial",sans-serif'>access-list</span></b><span
+     style='font-size:11.0pt;font-family:"Arial",sans-serif'> - All firewall
+     configuration commands start with this keyword.</span></li>
+ <li class=MsoNormal style='margin-top:5.0pt;margin-bottom:5.0pt;text-align:
+     left;background:white'><b><span style='font-size:11.0pt;font-family:"Arial",sans-serif'>number</span></b><span
+     style='font-size:11.0pt;font-family:"Arial",sans-serif'> - A number
+     between 0-199 or 2000-2999 (Think of it as the name of the list.) </span></li>
+ <li class=MsoNormal style='margin-top:5.0pt;margin-bottom:5.0pt;text-align:
+     left;background:white'><b><span style='font-size:11.0pt;font-family:"Arial",sans-serif'>permit</span></b><i><span
+     style='font-size:11.0pt;font-family:"Arial",sans-serif'> or </span></i><b><span
+     style='font-size:11.0pt;font-family:"Arial",sans-serif'>deny</span></b><span
+     style='font-size:11.0pt;font-family:"Arial",sans-serif'> - Whether to
+     permit or deny this packet of information if conditions match </span></li>
+ <li class=MsoNormal style='margin-top:5.0pt;margin-bottom:5.0pt;text-align:
+     left;background:white'><b><span style='font-size:11.0pt;font-family:"Arial",sans-serif'>protocol
+     </span></b><span style='font-size:11.0pt;font-family:"Arial",sans-serif'>(optional)
+     - Type of protocol for this packet: <b>IP, ICMP, SNMP, UDP</b> or <b>TCP. </b>If
+     omitted, then this command pertains to all network traffic regardless of
+     protocol.</span></li>
+ <li class=MsoNormal style='margin-top:5.0pt;margin-bottom:5.0pt;text-align:
+     left;background:white'><b><span style='font-size:11.0pt;font-family:"Arial",sans-serif'>Source
+     Address</span></b><span style='font-size:11.0pt;font-family:"Arial",sans-serif'>
+     - The Internet address of the sender of the packet. This can be:</span></li>
+ <ul style='margin-top:0in' type=circle>
+  <li class=MsoNormal style='margin-top:5.0pt;margin-bottom:5.0pt;text-align:
+      left;background:white'><b><span style='font-size:11.0pt;font-family:"Arial",sans-serif'>any
+      </span></b><span style='font-size:11.0pt;font-family:"Arial",sans-serif'>-
+      This access command applies to packets from any source.</span></li>
+  <li class=MsoNormal style='margin-top:5.0pt;margin-bottom:5.0pt;text-align:
+      left;background:white'><b><span style='font-size:11.0pt;font-family:"Arial",sans-serif'>host
+      ipaddr </span></b><span style='font-size:11.0pt;font-family:"Arial",sans-serif'>-
+      This command applies to one particular computer. The IP address of the
+      computer is given in the usual dotted-decimal format (i.e. 152.8.1.2).</span></li>
+  <li class=MsoNormal style='margin-top:5.0pt;margin-bottom:5.0pt;text-align:
+      left;background:white'><b><span style='font-size:11.0pt;font-family:"Arial",sans-serif'>ipaddr
+      mask </span></b><span style='font-size:11.0pt;font-family:"Arial",sans-serif'>-
+      The IP address of the packet's source is specified in the usual
+      dotted-decimal format. This is followed by a mask, also specified in the
+      usual dotted-decimal format. When comparing the packet's source address,
+      any address bit whose mask bit is one is ignored. Thus 152.8.12.47
+      0.0.255.255 represents all IP addresses whose first 16 bits match.</span></li>
+ </ul>
+ <li class=MsoNormal style='margin-top:5.0pt;margin-bottom:5.0pt;text-align:
+     left;background:white'><b><span style='font-size:11.0pt;font-family:"Arial",sans-serif'>Destination
+     Address</span></b><span style='font-size:11.0pt;font-family:"Arial",sans-serif'>
+     - The Internet address of the network packet's destination. This can be
+     specified in the same three formats as the source address.</span></li>
+ <li class=MsoNormal style='margin-top:5.0pt;margin-bottom:5.0pt;text-align:
+     left;background:white'><b><span style='font-size:11.0pt;font-family:"Arial",sans-serif'>Operator</span></b><span
+     style='font-size:11.0pt;font-family:"Arial",sans-serif'> (optional) - This
+     applies to TCP or UDP ports only. This indicates how the port number in
+     the packet should be compared. If omitted, then this command applies for
+     all ports. </span></li>
+</ul>
+
+<table class=MsoTableGrid border=1 cellspacing=0 cellpadding=0
+ style='margin-left:1.0in;border-collapse:collapse;border:none'>
+ <tr>
+  <td width=66 valign=top style='width:49.5pt;border:solid windowtext 1.0pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=left style='margin-bottom:3.0pt;text-align:left'><b><span
+  style='font-size:11.0pt;font-family:"Arial",sans-serif'>eq</span></b></p>
+  </td>
+  <td width=564 valign=top style='width:423.0pt;border:solid windowtext 1.0pt;
+  border-left:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=left style='margin-bottom:3.0pt;text-align:left'><span
+  style='font-size:11.0pt;font-family:"Arial",sans-serif'>equal</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=66 valign=top style='width:49.5pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=left style='margin-bottom:3.0pt;text-align:left'><b><span
+  style='font-size:11.0pt;font-family:"Arial",sans-serif'>lt</span></b></p>
+  </td>
+  <td width=564 valign=top style='width:423.0pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=left style='margin-bottom:3.0pt;text-align:left'><span
+  style='font-size:11.0pt;font-family:"Arial",sans-serif'>less than</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=66 valign=top style='width:49.5pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=left style='margin-bottom:3.0pt;text-align:left'><b><span
+  style='font-size:11.0pt;font-family:"Arial",sans-serif'>gt</span></b></p>
+  </td>
+  <td width=564 valign=top style='width:423.0pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=left style='margin-bottom:3.0pt;text-align:left'><span
+  style='font-size:11.0pt;font-family:"Arial",sans-serif'>greater than</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=66 valign=top style='width:49.5pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=left style='margin-bottom:3.0pt;text-align:left'><b><span
+  style='font-size:11.0pt;font-family:"Arial",sans-serif'>neq</span></b></p>
+  </td>
+  <td width=564 valign=top style='width:423.0pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=left style='margin-bottom:3.0pt;text-align:left'><span
+  style='font-size:11.0pt;font-family:"Arial",sans-serif'>not equal</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=66 valign=top style='width:49.5pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=left style='margin-bottom:3.0pt;text-align:left'><b><span
+  style='font-size:11.0pt;font-family:"Arial",sans-serif'>range</span></b></p>
+  </td>
+  <td width=564 valign=top style='width:423.0pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=left style='margin-bottom:3.0pt;text-align:left'><span
+  style='font-size:11.0pt;font-family:"Arial",sans-serif'>a range of ports; you
+  must specify two different port numbers</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=66 valign=top style='width:49.5pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=left style='margin-bottom:3.0pt;text-align:left'><b><span
+  style='font-size:11.0pt;font-family:"Arial",sans-serif'>est</span></b></p>
+  </td>
+  <td width=564 valign=top style='width:423.0pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=left style='margin-bottom:3.0pt;text-align:left'><span
+  style='font-size:11.0pt;font-family:"Arial",sans-serif'>established
+  connections - this allows packets to pass through the firewall from the
+  Internet if they are the response to a connection established from within the
+  intranet.</span></p>
+  </td>
+ </tr>
+</table>
+
+<ul style='margin-top:0in' type=disc>
+ <li class=MsoNormal style='margin-top:5.0pt;margin-bottom:5.0pt;text-align:
+     left;background:white'><b><span style='font-size:11.0pt;font-family:"Arial",sans-serif'>Port</span></b><span
+     style='font-size:11.0pt;font-family:"Arial",sans-serif'> (optional) -
+     TCP/UDP destination port number. If omitted, then this command applies for
+     all port numbers. The port number must be specified if an operator is
+     given.</span></li>
+ <li class=MsoNormal style='margin-top:5.0pt;text-align:left;background:white'><b><span
+     style='font-size:11.0pt;font-family:"Arial",sans-serif'>Log</span></b><span
+     style='font-size:11.0pt;font-family:"Arial",sans-serif'> - (optional)
+     Whether to log this entry to the console <i>(not used in the simulation)</i></span></li>
+</ul>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal>Commands are case insensitive. Note that all access-list
+commands must fit on one line. Comments can be included configuration. Comments
+start with an exclamation point ( <b>! </b>).</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal><b><span style='font-family:"Arial",sans-serif'>Examples:</span></b></p>
+
+<p class=MsoNormal align=center style='margin-bottom:6.0pt;text-align:center'><span
+style='font-family:"Courier New"'>access-list 111 permit tcp any host 152.8.1.1
+eq 80</span></p>
+
+<p class=MsoNormal>This permits any computer on the Internet to connect to the
+computer whose IP address is 152.8.1.1 using the TCP protocol and port 80.</p>
+
+<p class=MsoNormal align=center style='margin-top:6.0pt;margin-right:0in;
+margin-bottom:6.0pt;margin-left:0in;text-align:center'><span style='font-family:
+"Courier New"'>access-list 123 deny any 178.22.8.9 0.0.255.255</span></p>
+
+<p class=MsoNormal>This will prohibit any computer from accessing a computer on
+the 178.22 domain using any protocol.</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal align=center style='text-align:center'><span
+style='font-size:16.0pt;font-family:"Arial",sans-serif'>Addresses</span></p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal>The access-list commands specify source and destination
+addresses. If the source address starts with 152.8, then the traffic is going
+out from your network to the Internet. If the source is any other address, then
+the traffic is coming into your network. A description of your simulated
+network can be found <a href="Config.html">here</a>.</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal align=center style='text-align:center'><span
+style='font-size:16.0pt;font-family:"Arial",sans-serif'>Access-list command
+order is important</span></p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in'><span
+style='font-family:Symbol'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span>When a packet arrives at your firewall, it will be compared with
+each access-list statement in the order they appear.</p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in'><span
+style='font-family:Symbol'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span>The first statement that applies to that packet determines if it
+is permitted or denied.</p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in'><span
+style='font-family:Symbol'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span>For incoming traffic, there is an implicit deny everything at the
+end of the access-lists.</p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in'><span
+style='font-family:Symbol'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span>For outgoing traffic, there is an implicit permit everything at
+the end of the access-lists.</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal align=center style='text-align:center'><span
+style='font-size:16.0pt;font-family:"Arial",sans-serif'>Some interesting port
+numbers</span></p>
+
+<p class=MsoNormal align=center style='text-align:center'>All use TCP unless
+otherwise noted</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<div align=center>
+
+<table class=MsoTableGrid border=1 cellspacing=0 cellpadding=0
+ style='border-collapse:collapse;border:none'>
+ <tr>
+  <td width=120 valign=top style='width:1.25in;border:solid windowtext 1.0pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'><b><span
+  style='font-family:"Arial",sans-serif'>port</span></b></p>
+  </td>
+  <td width=318 valign=top style='width:238.5pt;border:solid windowtext 1.0pt;
+  border-left:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal><b><span style='font-family:"Arial",sans-serif'>service</span></b></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=120 valign=top style='width:1.25in;border:solid windowtext 1.0pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'>21</p>
+  </td>
+  <td width=318 valign=top style='width:238.5pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>FTP</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=120 valign=top style='width:1.25in;border:solid windowtext 1.0pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'>23</p>
+  </td>
+  <td width=318 valign=top style='width:238.5pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>Telnet</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=120 valign=top style='width:1.25in;border:solid windowtext 1.0pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'>25</p>
+  </td>
+  <td width=318 valign=top style='width:238.5pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>Simple Mail Transport Protocol</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=120 valign=top style='width:1.25in;border:solid windowtext 1.0pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'>47</p>
+  </td>
+  <td width=318 valign=top style='width:238.5pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>NI FTP</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=120 valign=top style='width:1.25in;border:solid windowtext 1.0pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'>53</p>
+  </td>
+  <td width=318 valign=top style='width:238.5pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>Domain Name Servers - UDP</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=120 valign=top style='width:1.25in;border:solid windowtext 1.0pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'>69</p>
+  </td>
+  <td width=318 valign=top style='width:238.5pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>Trivial FTP</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=120 valign=top style='width:1.25in;border:solid windowtext 1.0pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'>80</p>
+  </td>
+  <td width=318 valign=top style='width:238.5pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>HTTP</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=120 valign=top style='width:1.25in;border:solid windowtext 1.0pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'>110</p>
+  </td>
+  <td width=318 valign=top style='width:238.5pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>POP3 client email</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=120 valign=top style='width:1.25in;border:solid windowtext 1.0pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'>123</p>
+  </td>
+  <td width=318 valign=top style='width:238.5pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>Network Time Protocol</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=120 valign=top style='width:1.25in;border:solid windowtext 1.0pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'>137-139</p>
+  </td>
+  <td width=318 valign=top style='width:238.5pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>Microsoft NETBIOS</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=120 valign=top style='width:1.25in;border:solid windowtext 1.0pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'>143</p>
+  </td>
+  <td width=318 valign=top style='width:238.5pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>IMAP4 client email</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=120 valign=top style='width:1.25in;border:solid windowtext 1.0pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'>161</p>
+  </td>
+  <td width=318 valign=top style='width:238.5pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>Simple Network Maintenance Protocol</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=120 valign=top style='width:1.25in;border:solid windowtext 1.0pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'>443</p>
+  </td>
+  <td width=318 valign=top style='width:238.5pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>HTTPS</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=120 valign=top style='width:1.25in;border:solid windowtext 1.0pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'>445</p>
+  </td>
+  <td width=318 valign=top style='width:238.5pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>Windows File Sharing</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=120 valign=top style='width:1.25in;border:solid windowtext 1.0pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'>1863</p>
+  </td>
+  <td width=318 valign=top style='width:238.5pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>MSN Instant messaging</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=120 valign=top style='width:1.25in;border:solid windowtext 1.0pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'>1701</p>
+  </td>
+  <td width=318 valign=top style='width:238.5pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>Layer 2 Tunneling Protocol (L2TP)</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=120 valign=top style='width:1.25in;border:solid windowtext 1.0pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'>1723</p>
+  </td>
+  <td width=318 valign=top style='width:238.5pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>Point-to-Point Tunneling Protocol (PPTP)</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=120 valign=top style='width:1.25in;border:solid windowtext 1.0pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'>3389</p>
+  </td>
+  <td width=318 valign=top style='width:238.5pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>Windows Remote Desktop Protocol</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=120 valign=top style='width:1.25in;border:solid windowtext 1.0pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'>5190</p>
+  </td>
+  <td width=318 valign=top style='width:238.5pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>AOL instant messenger</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=120 valign=top style='width:1.25in;border:solid windowtext 1.0pt;
+  border-top:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'>28800-29100</p>
+  </td>
+  <td width=318 valign=top style='width:238.5pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal>MSN Gaming Zone</p>
+  </td>
+ </tr>
+</table>
+
+</div>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal align=center style='text-align:center'><span
+style='font-size:18.0pt;font-family:"Arial",sans-serif'>Initial Configuration</span></p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal>When you first start the simulation, you should configure
+your firewall to allow the following services to run. Actions against these services
+are possible as soon as the administrator enables the action button.</p>
+
+<ul style='margin-top:0in' type=disc>
+ <li class=MsoNormal style='margin-top:6.0pt'>Access by the public to your web
+     site</li>
+ <li class=MsoNormal style='margin-top:6.0pt'>Email from other email servers</li>
+ <li class=MsoNormal style='margin-top:6.0pt'>Domain Name Server access</li>
+</ul>
+
+</div>
+
+</body>
+
+</html>
