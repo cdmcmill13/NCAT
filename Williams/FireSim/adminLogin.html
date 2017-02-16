@@ -3,18 +3,42 @@
 <!-- First page for the admininistrator to enter the groupID -->
 <head>
 <title>FireSim Administrator Login</title>
+
+  <style>
+    body{
+      background-image: url("bluesec.jpeg");
+    }
+    div{
+      color: cornsilk;
+      align-items: center;
+      margin:0 auto;
+      text-align:center;
+
+    }
+
+    #div2{
+      width: 50%;
+      margin: auto;
+    }
+
+    form{
+
+    }
+
+
+
+  </style>
 </head>
 
 <body>
 
 <div>
 
-<p align=center style='text-align:center'><span
-style='font-size:14.0pt;font-family:"Arial",sans-serif'>FireSim</span></p>
+<h1>FireSim</h1>
 
-<p align=center style='text-align:center'><span
-style='font-family:"Arial",sans-serif'>Administrator Login</span><br></p>
+<h2>Administrator Login<br></h2>
 
+  <div>
 <form action="adminStart.php">
   Group Identifier:<br>
   <input type="text" name="groupID">
@@ -23,15 +47,18 @@ style='font-family:"Arial",sans-serif'>Administrator Login</span><br></p>
 </form>
 
 <br>
-<p >Enter a name to identify the group of people participating
-in this firewall simulation. Participants using the firewall simulator will
-need to enter this group identifier. The group identifier allows simultaneous
-use of the simulator by separate groups. Example identifiers might be <span
+
+<p>Enter a name to identify the group of people participating
+in this firewall simulation.<br> <br>
+  Participants using the firewall simulator will
+need to enter this group identifier.<br> <br>
+  The group identifier allows simultaneous
+use of the simulator by separate groups. <br>Example identifiers might be <span
 style='font-family:"Courier New"'>COMP476</span> or <span style='font-family:
 "Courier New"'>NCATF16</span>.</p>
 
 <p >The instructor or administrator must enter the group identifier before any of the participants can log in. Be sure to inform the participants of the group identifier.</p>
-
+</div>
 </div>
 
 </body>

@@ -1,15 +1,41 @@
 <!DOCTYPE html>
 <!-- Test to populate the list of players -->
 <html>
-<body>
+<head>
+    <title>FireSim Table</title>
+    <style>
+        body{
+            background-image: url("bluesec.jpeg");
+        }
+        div{
+            color: cornsilk;
+            align-items: center;
+            text-align: center;
+        }
 
-<H3>Table Refresh test</H3>
+        form{
+            width:50%;
+            margin:0 auto;
+            text-align:center;
+        }
+
+        table{
+            border: medium cornsilk solid;
+            align-content: center;
+        }
+
+    </style>
+
+</head>
+<body>
+<div>
+<H3>Table Refresh Test</H3>
 <p id = "pressNum">nothing</p>
 <p onclick="playerUpdate()">Update list</p>
 <br>
-<table id="playerlist">
+<table align="center">
 <thead>
-<tr><th>select</th><th>Name</th><th>Score</th>
+<tr><th>Select |</th><th>Name |</th><th>Score</th>
 </tr>
 </thead>
 <tbody>
@@ -17,7 +43,7 @@
 </td><td>Fred</td><td>100</td></tr>
 </tbody>
 </table>
-
+</div>
 
 
 <script>

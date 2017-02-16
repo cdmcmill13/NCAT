@@ -3,28 +3,40 @@
 <!-- Login error for the player when duplicate name -->
 <head>
 <title>FireSim Player Login Again</title>
+
+  <style>
+    body{
+      background-image: url("errorbg.jpg");
+    }
+    div{
+      color: cornsilk;
+      align-items: center;
+      width:50%;
+      margin:0 auto;
+      text-align:center;
+    }
+
+  </style>
 </head>
 
 <body>
 
 <div>
 
-<p align=center style='text-align:center'><span
-style='font-size:14.0pt;font-family:"Arial",sans-serif'>FireSim</span></p>
+<h1>FireSim</h1>
 
-<p align=center style='text-align:center'><span
-style='font-family:"Arial",sans-serif'>Participant Login</span><br></p>
+<h3>Participant Login</h3>
 
 <form action="playerStart.php">
-  Name:
+  Name: <br>
   <input type="text" name="name"><br>
-  Group Identifier:
+  Group Identifier: <br>
   <input type="text" name="groupID">
   <br><br>
   <input type="submit" value="Submit">
 </form>
 
-<h2>The name you entered is already in use.  Please use a different name.</h2>
+<h2>The name you entered is already in use!  Please use a different name.</h2>
 <p>The name and group identifiers must be 16 or less characters and can only contain letters, numbers
 and spaces.</p>
 <br>
