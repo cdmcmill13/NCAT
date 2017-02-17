@@ -432,6 +432,34 @@ var memToMbr = myCanvas.getContext('2d');
 memToMbr.fillStyle = "black";
 memToMbr.fillRect(525,313,2,37);
 
+var fetching = myCanvas.getContext('2d');
+function isFetching(){
+
+    fetching.font = "10px Arial";
+    fetching.strokeStyle = "red";
+    fetching.strokeText("F e t c h i n g m e m o r y . . .",165, 345);
+}
+
+function isNotFetching(){
+
+    fetching.fillStyle = 'white';
+    fetching.fillRect(100, 335, 150, 15);
+}
+
+var loading = myCanvas.getContext('2d');
+function isLoading(){
+
+    loading.font = "10px Arial";
+    loading.strokeStyle = "red";
+    loading.strokeText("L o a d i n g m e m o r y . . .",450, 345);
+}
+
+function isNotLoading(){
+
+    loading.fillStyle = 'white';
+    loading.fillRect(370, 335, 150, 15);
+}
+
 var memInProgress = false;
 
 var stepCount = 0;
@@ -550,6 +578,18 @@ function drawArrows(){
         drawMbrOutOpen();
     }
 
+    if(memDropMenus[(stepCount - 1)].value == 'READ'){
+        isFetching();
+    } else {
+        isNotFetching();
+    }
+
+    if(memDropMenus[(stepCount - 1)].value == 'WAIT'){
+        isLoading();
+    } else {
+        isNotLoading();
+    }
+
 }
 
 var bus2IRArray = document.getElementsByName("busToIR");
@@ -622,6 +662,10 @@ var resetBoard = function(){
     busData = null;
 
     resetArrows();
+
+    isNotFetching();
+
+    isNotLoading();
 
 };
 
