@@ -1092,12 +1092,12 @@ function waitErrors() {
 
 function writeErrors() {
 
-    if(memDropMenus[(stepCount -1)].value == 'WRITE' && MBRData == null) {
+    if(memDropMenus[(stepCount -1)].value == 'WRITE' && MBRData == null && bus2MBRArray[(stepCount - 1)].checked == false) {
         alert("Memory write with no data in MBR");
         return true;
     }
 
-    if(memDropMenus[(stepCount -1)].value == 'WRITE' && MARData == null) {
+    if(memDropMenus[(stepCount -1)].value == 'WRITE' && MARData == null && bus2MBRArray[(stepCount - 1)].checked == false) {
         alert("Memory write with no data in MAR");
         return true;
     }
