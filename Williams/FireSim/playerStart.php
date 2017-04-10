@@ -1,4 +1,17 @@
 <?php
+//Report simple run errors
+error_reporting(E_ERROR | E_WARNING | E_PARSE);
+
+//Report E_NOTICE in addition to simple run errors
+//(to catch uninitialized variables or variable name misspellings)
+error_reporting(E_ERROR | E_WARNING | E_PARSE | E_NOTICE);
+
+//Report all PHP errors
+error_reporting(1);
+
+//Report all PHP errors (see changelog)
+error_reporting(E_ALL);
+
 /* FireSim firewall educational simulation
  * The playerStart program receives a name and groupID from the playerLogin.html page that
  * is initially used by the participants to join the simulation game.
@@ -12,12 +25,12 @@ session_start();        // start session for administrator
 $player = trim($_GET['name']);
 $groupID = strtoupper(trim($_GET['groupID']));  // convert groupID to uppercase for easy matching
 
-if (strlen($groupID) > 16 || !cleanName($groupID)  
-        || strlen($player) > 16 || !cleanName($player)) {    // check for invalid IDs
+if (strlen($groupID) > 16 || !cleanName($groupID)
+    || strlen($player) > 16 || !cleanName($player)) {    // check for invalid IDs
     Header('Location: badname.html');                // display error page
 } else {
-/* look in the games table to see if the groupID has been entered by admin */
-    $sqlObj = new mysqli("localhost", "root", "cmptrsci1144", "FireSim");
+    /* look in the games table to see if the groupID has been entered by admin */
+    $sqlObj = new mysqli("localhost", "root", "root", "fireSim");
     if ($sqlObj->connect_error) {
         die("Datbase connection failed: " . $sqlObj->connect_error);
     }
@@ -27,14 +40,14 @@ if (strlen($groupID) > 16 || !cleanName($groupID)
         exit("This should not happen");
     }
     if (!$sqlstmt->bind_param("s", $groupID)) {
-        die("select parameter bind failed (" . $sqlstmt->errno . ") " . $sqlstmt->error);       
+        die("select parameter bind failed (" . $sqlstmt->errno . ") " . $sqlstmt->error);
     }
     if(!$sqlstmt->execute()) {
         die("select Execute failed (" . $sqlstmt->errno . ") " . $sqlstmt->error);
     }
     $results = $sqlstmt->get_result();
     if ($results->num_rows == 0) {              // error if groupID not present
-        $sqlstmt->close();        
+        $sqlstmt->close();
         $sqlObj->close();
         header('Location: nogroupID.html');
     } else {
@@ -45,17 +58,17 @@ if (strlen($groupID) > 16 || !cleanName($groupID)
             die("player select prepare failed: (" . $sqlObj->errno . ") " . $sqlObj->error);
         }
         if (!$sqlstmt3->bind_param("ss", $player, $groupID)) {
-            die("player select parameter bind failed (" . $sqlstmt3->errno . ") " . $sqlstmt3->error);       
+            die("player select parameter bind failed (" . $sqlstmt3->errno . ") " . $sqlstmt3->error);
         }
         if(!$sqlstmt3->execute()) {
             die("player select Execute failed (" . $sqlstmt3->errno . ") " . $sqlstmt3->error);
         }
         $playerResult = $sqlstmt3->get_result();
         if ($playerResult->num_rows != 0) {              // error if player name not unique
-            $sqlstmt3->close();        
+            $sqlstmt3->close();
             $sqlObj->close();
             header('Location: usedname.html');
-        } else {        
+        } else {
             /* Add the player to the players table */
             $queryStr2 = "insert into players (player, groupID, score) values (?, ?, ?)";
             if (!($sqlstmt2 = $sqlObj->prepare($queryStr2))) {
@@ -63,7 +76,7 @@ if (strlen($groupID) > 16 || !cleanName($groupID)
             }
             $defaultScore = 100;
             if (!$sqlstmt2->bind_param("ssi", $player, $groupID, $defaultScore)) {
-                die("player insert parameter bind failed (" . $sqlstmt2->errno . ") " . $sqlstmt2->error);       
+                die("player insert parameter bind failed (" . $sqlstmt2->errno . ") " . $sqlstmt2->error);
             }
             if(!$sqlstmt2->execute()) {
                 die("player insert Execute failed (" . $sqlstmt2->errno . ") " . $sqlstmt2->error);
@@ -75,7 +88,7 @@ if (strlen($groupID) > 16 || !cleanName($groupID)
             $_SESSION['groupID'] = $groupID;
             $_SESSION['player']  = $player;
 
-            /* Direct the administrator to the admin home page */
+            /* Direct the player to the player home page */
             header('Location: playerhome.html');
         }
     }
@@ -87,15 +100,15 @@ if (strlen($groupID) > 16 || !cleanName($groupID)
  * are allowed. The function returns true if the name is friendly and false otherwise.
  */
 function cleanName($dangerous) {
-    $c = str_split($dangerous);         // convert to array of characters
+    $c = str_split($dangerous);                             // convert to array of characters
     for ($k = 0; $k < count($c); $k++) {
         $numValue = ord($c[$k]);
         if (    !($numValue >= 65 && $numValue <= 90) &&    // if not an uppercase letter
-                !($numValue >= 97 && $numValue <= 122) &&   // if not a lowercase letter 
-                !($numValue >= 48 && $numValue <= 57) &&    // if not a numerical digit
-                $numValue != 32 ) {                         // if not a space
-            echo "Evil character " . $c[$k];    //!!DEBUG
-            return false;                                   // unclean, unclean
+            !($numValue >= 97 && $numValue <= 122) &&       // if not a lowercase letter
+            !($numValue >= 48 && $numValue <= 57) &&        // if not a numerical digit
+            $numValue != 32 ) {                             // if not a space
+            echo "Evil character " . $c[$k];                // !!DEBUG
+            return false;
         }
     }
     return true;
